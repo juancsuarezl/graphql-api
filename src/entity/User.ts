@@ -25,17 +25,17 @@ export class User {
 export class User extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id!: string;
+  id: string;
 
   @Field(() => String)
   @Column()
-  name!: string;
+  name: string;
 
   @Field(() => String)
   @Column()
-  email!: string;
+  email: string;
 
   @Field(() => String)
   @Column()
-  password!: string;
+  password: string;
 }

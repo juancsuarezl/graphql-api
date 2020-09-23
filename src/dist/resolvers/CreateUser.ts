@@ -5,10 +5,11 @@ import { CreateUserInput} from '../../inputs/createUserInput'
 const data = new CreateUserInput;
  
 export class CreateUser {
-  @Mutation((data) => User)
-  async createUser(@Arg("data") data: CreateUserInput) {
-    const user = User.create();
-    await user.save();
-    return user;
+@Mutation(() => User)
+async createUser(@Arg("data") data: CreateUserInput) {
+  const user = User.create(data);
+  await user.save();
+  return user;
   }
+
 }

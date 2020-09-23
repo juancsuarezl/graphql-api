@@ -6,17 +6,17 @@ import { ObjectType, Field, ID } from "type-graphql";
 export class Recipe extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id!: string;
+  id: string;
 
   @Field(() => String)
   @Column()
-  name!: string;
+  name: string;
 
   @Field(() => String)
   @Column()
-  ingredients!: string;
+  ingredients: string;
 
   @Field(() => String)
   @Column()
-  category!: string;
+  category: string;
 }
