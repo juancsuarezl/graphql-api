@@ -6,9 +6,9 @@ import { ObjectType, Field, ID } from "type-graphql";
 export class Category extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: string;
+  id:string;
 
   @Field(() => String)
   @Column()
-  name: string;
+  name:string;
 }

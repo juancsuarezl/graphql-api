@@ -1,4 +1,5 @@
 import { InputType, Field } from "type-graphql";
+import { Recipe } from '../entity/Recipe'
 
 @InputType()
 export class CreateRecipeInput {
@@ -10,5 +11,4 @@ export class CreateRecipeInput {
 
   @Field()
   category: string;
-
 }
