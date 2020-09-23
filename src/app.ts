@@ -1,20 +1,18 @@
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
-import { RecipeResolver} from './dist/resolvers/RecipeResolver'
-import { UserResolver, GetUserById } from './dist/resolvers/UserResolver'
-import { CreateUser } from './dist/resolvers/CreateUser'
-import { CreateRecipe } from './dist/resolvers/CreateRecipe'
-import { CreateCategory} from './dist/resolvers/CreateCategory'
-//import { GetUserById} from './dist/resolvers/getUserById'
+import { GetAllRecipes, CreateRecipe, updateRecipe, GetRecipeById, GetRecipeByName} from './dist/resolvers/RecipeResolver'
+import { GetAllUsers, GetUserById, CreateUser, updateUser } from './dist/resolvers/UserResolver'
+import { GetAllCategories, CreateCategory} from './dist/resolvers/CategoryResolver'
 
 export const startServer = async () => {
     const app = express();
     const server = new ApolloServer ({
     
          schema: await buildSchema({
-            resolvers:[ RecipeResolver, UserResolver, CreateRecipe, 
-                CreateUser, CreateCategory, GetUserById],
+            resolvers:[GetAllUsers, GetUserById, CreateUser, updateUser, 
+                GetAllRecipes, CreateRecipe, updateRecipe, GetRecipeById,
+                GetRecipeByName, GetAllCategories, CreateCategory],
             validate: false
         })
     })    
