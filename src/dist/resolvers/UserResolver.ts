@@ -9,3 +9,16 @@ export class UserResolver {
     }
 }
 
+export class GetUserById {
+    @Query(() => User)
+    async GetUserById(@Arg("id") id: string) {
+       const user = await User.findOne({ where: { id }});
+       if(!user){ 
+        throw new Error(`User with ID = ${id} doesn´t exist`);
+       }
+       return user;  
+    }
+ }
+
+    
+

@@ -1,12 +1,11 @@
-import { Mutation, Arg} from 'type-graphql'
+/*import {Resolver, Query, Arg} from 'type-graphql'
 import { User } from '../../entity/User'
 
-/*const id = User.id
 
-export class getUserById {
-  @Mutation((id) => User)
-  async getUserById(id: User) {
-    const user = users.findOne(user => user.id === id);
-    return user;
+export class GetUserById {
+@Query(() => User)
+async GetUserById(@Arg("id") id: string) {
+  const user = await User.findOne({ where: { id }});
+  return user; 
   }
 }*/

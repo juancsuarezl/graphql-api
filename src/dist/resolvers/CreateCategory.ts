@@ -3,7 +3,7 @@ import { Category } from '../../entity/Category'
 
 export class CreateCategory {
   @Mutation(() => Category)
-  async createCategory(@Arg("name") name:String) {
+  async CreateCategory(@Arg("name") name:String) {
     const category = Category.create();
     await category.save();
     return category;
