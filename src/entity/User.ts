@@ -1,5 +1,6 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
+import { hash, compare } from "bcryptjs";
 import { Recipe } from './Recipe'
 
 @Entity()
