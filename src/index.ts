@@ -7,7 +7,7 @@ async function main () {
     connect();
     const app = await startServer();
     app.listen(3001);
-    console.log('Server on Port', 3001);   
+    console.log('Server running on PORT: 3001');   
 }
 
 main();

@@ -1,9 +1,12 @@
-import {ObjectType, Query, Resolver, Mutation, Arg} from 'type-graphql'
-import { User } from '../../entity/User'
+import {ObjectType, Query, Resolver, Mutation, Arg, Field, UseMiddleware, Ctx } from 'type-graphql'
+import { User, LoginResponse } from '../../entity/User'
 import { CreateUserInput} from '../../inputs/createUserInput'
 import { UpdateUserInput } from '../../inputs/UpdateUserInput'
 import { signUpInput } from '../../inputs/signUpInput'
 import { hash, compare} from "bcryptjs"
+import { sign } from "jsonwebtoken"
+import { isAuth } from "../../isAuth";
+import { MyContext } from "../../MyContext"
 
 @Resolver()
 export class GetAllUsers {
@@ -11,6 +14,14 @@ export class GetAllUsers {
     GetAllUsers(){
         return User.find();
     }
+}
+
+export class Me {
+@Query(() => String)
+  @UseMiddleware(isAuth)
+  async Me(@Ctx() { payload }: MyContext) {
+  return `Your user id : ${payload!.userId}`;
+  }
 }
 
 export class GetUserById {
@@ -44,10 +55,8 @@ async updateUser(@Arg("id") id: string, @Arg("data") data: UpdateUserInput) {
   if (!user) {
     throw new Error(`The user with id: ${id} does not exist!`);
   }
-
   Object.assign(user, data);
   await user.save();
-
   return user;
 }   
 
@@ -64,13 +73,14 @@ export class signUp {
     if (user){
       throw new Error("Email already in use");
     } else {
-      const hashedPassword = await hash(password, 13);
+      //const hashedPassword = await hash(password, 13);
     // let user = null;
     try {
       await User.insert({
         name,
         email,
-        password: hashedPassword
+        password
+        //password: hashedPassword
       });
     } catch (err) {
       console.log(err);
@@ -83,30 +93,28 @@ export class signUp {
 }
 
 export class login {
-  @Mutation(() => Boolean)
-  async login(@Arg("email") email: string, @Arg("password") password: string) {
-  try{
-    const user = await User.findOne({ where: { email } });
+@Mutation(() => LoginResponse)
+async Login(@Arg("email") email: string, @Arg("password") password: string) {
+  const user = await User.findOne({ where: { email } });
 
-    if (!user) {
-      throw new Error("Could not find user");
-      //LoginResponse = false;
-      return false;
-    }
-    if (password === user.password){
-      console.log("Succesfull Login!")
-      return true;
-    } else {
-      throw new Error("Wrong password");
-      return false;
-    }
-    
-  }catch (error) {
-    console.log(error);
-    throw error;
+  if (!user) {
+    throw new Error("Could not find user");
   }
 
-  }  
+  /*const verify = await compare(password, user.password);
+
+  if (!verify) {
+    throw new Error("Bad password");*/
+
+  if (password != user.password) {
+    throw new Error("Incorrect password");
+  }
+
+  return {
+    accessToken: sign({ userId: user.id }, "MySecretKey", {
+      expiresIn: "15m"
+    })
+  };
 }
 
-  
+} 

@@ -1,5 +1,6 @@
-import { InputType, Field } from "type-graphql";
+import { InputType, Field, ObjectType } from "type-graphql";
 import { User } from '../entity/User'
+import { Recipe } from '../entity/Recipe'
 
 @InputType()
 export class CreateUserInput {
@@ -11,4 +12,7 @@ export class CreateUserInput {
 
   @Field()
   password: string;
+
+  @Field()
+  recipes: Recipe[];
 }

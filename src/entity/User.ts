@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { hash, compare } from "bcryptjs";
 import { Recipe } from './Recipe'
@@ -22,7 +22,13 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  /*@Field(() => [Recipe!])
-  @Column()
-  recipes: [Recipe]*/
+  @OneToMany(type => Recipe, recipe => recipe.user) 
+  recipes: [Recipe]; 
+
+}
+
+@ObjectType()
+export class LoginResponse {
+  @Field()
+  accessToken: string;
 }
