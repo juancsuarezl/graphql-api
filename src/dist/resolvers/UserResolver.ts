@@ -47,9 +47,9 @@ async createUser(@Arg("data") data: CreateUserInput) {
 
 }
 
-export class updateUser {
+export class updateUserById {
 @Mutation(() => User)
-async updateUser(@Arg("id") id: string, @Arg("data") data: UpdateUserInput) {
+async updateUserById(@Arg("id") id: string, @Arg("data") data: UpdateUserInput) {
   const user = await User.findOne({ where: { id }});
 
   if (!user) {
@@ -61,6 +61,36 @@ async updateUser(@Arg("id") id: string, @Arg("data") data: UpdateUserInput) {
 }   
 
 }
+
+export class updateUserByName {
+  @Mutation(() => User)
+  async updateUserByName(@Arg("name") name: string, @Arg("data") data: UpdateUserInput) {
+    const user = await User.findOne({ where: { name }});
+  
+    if (!user) {
+      throw new Error(`The user with Name: ${name} does not exist!`);
+    }
+    Object.assign(user, data);
+    await user.save();
+    return user;
+  }   
+  
+  }
+
+  export class updateUserByEmail {
+    @Mutation(() => User)
+    async updateUserByEmail(@Arg("email") email: string, @Arg("data") data: UpdateUserInput) {
+      const user = await User.findOne({ where: { email }});
+    
+      if (!user) {
+        throw new Error(`The user with Email: ${email} does not exist!`);
+      }
+      Object.assign(user, data);
+      await user.save();
+      return user;
+    }   
+    
+    }
 
 export class signUp {
   @Mutation(() => Boolean)
