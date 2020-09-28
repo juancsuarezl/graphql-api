@@ -1,31 +1,42 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column,  ManyToOne, JoinColumn } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
-import { User } from './User'
+import { Entity, BaseEntity, PrimaryGeneratedColumn, 
+Column, ManyToOne, ManyToMany, CreateDateColumn, 
+JoinTable } from 'typeorm';
+import { ObjectType, Field, ID } from 'type-graphql';
+import { User } from './User';
+import { Category } from './Category';
 
 @Entity()
 @ObjectType()
 export class Recipe extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: string;
+  id!: string;
 
   @Field(() => String)
   @Column()
-  name: string;
+  name!: string;
 
   @Field(() => String)
   @Column()
-  description: string;
+  description!: string;
 
   @Field(() => String)
   @Column()
-  ingredients: string;
+  ingredients!: string;
 
   @Field(() => String)
   @Column()
-  category: string;
+  category!: string;
 
-  @ManyToOne(type => User, user => user.recipes) 
-  //@JoinColumn({name: "recipe_fk_user"})
-  user: User;
+  @Field(() => String)
+  @CreateDateColumn({ type: "timestamp" })
+  createdAt!: string;
+
+  @ManyToMany(() => Category)
+  @JoinTable()
+  categories!: Category[];
+
+  @ManyToOne(() => User, (user) => user.recipes)
+  @JoinTable()
+  user!: User;
 }

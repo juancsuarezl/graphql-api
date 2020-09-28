@@ -1,18 +1,21 @@
-import {ObjectType, Query, Resolver, Mutation, Arg} from 'type-graphql'
-import { IsNull } from 'typeorm';
-import { Recipe } from '../../entity/Recipe'
-import { CreateRecipeInput} from '../../inputs/createRecipeInput'
-import { UpdateRecipeInput } from '../../inputs/updateRecipeInput'
+import {ObjectType, Query, Resolver, Mutation, Arg, MiddlewareFn, UseMiddleware} from 'type-graphql';
+import { verify } from "jsonwebtoken";
+import { MyContext } from "../../MyContext";
+import { isAuth } from "../../isAuth";
+import { Recipe } from '../../entity/Recipe';
+import { User } from '../../entity/User';
+import { Category } from '../../entity/Category';
+import { CreateRecipeInput} from '../../inputs/createRecipeInput';
+import { UpdateRecipeInput } from '../../inputs/updateRecipeInput';
 
 @Resolver()
-export class GetAllRecipes {
+export class RecipeResolver {
     @Query(() => [Recipe])
+    //@UseMiddleware(isAuth)
     GetAllRecipes(){
         return Recipe.find();
     }
-}
 
-export class GetRecipeById {
     @Query(() => Recipe)
     async GetRecipeById(@Arg("id") id: string) {
        const recipe = await Recipe.findOne({ where: { id }});
@@ -21,20 +24,14 @@ export class GetRecipeById {
        }
        return recipe;  
     }
- }
-
- export class GetRecipeByName {
+ 
     @Query(() => Recipe)
     async GetRecipeByName(@Arg("name") name: string) {
-       const recipe = await Recipe.findOne({ where: { name }});
-       if(!recipe){ 
-        throw new Error(`Recipe with Name: ${name} doesn´t exist`);
-       }
-       return recipe;  
-    }
- }
-
- export class GetRecipesByCategory {
+      const recipe = await Recipe.findOne({ where: { name }});
+      if (!recipe) throw new Error(`The recipe with name: ${name} doesn't exist`);
+      return recipe;
+      }  
+    
   @Query(() => [Recipe]!)
   async GetRecipesByCategory(@Arg("category") category: string) {
      const recipe = await Recipe.find({ where: { category }});
@@ -43,11 +40,9 @@ export class GetRecipeById {
      }
      return recipe;  
   }
-}
 
-const data = new CreateRecipeInput;
+//const data = new CreateRecipeInput;
  
-export class CreateRecipe {
 @Mutation(() => Recipe)
 async createRecipe(@Arg("data") data: CreateRecipeInput) {
   const recipe = Recipe.create(data);
@@ -55,9 +50,6 @@ async createRecipe(@Arg("data") data: CreateRecipeInput) {
   return recipe;
   }
 
-}
-
-export class updateRecipe {
     @Mutation(() => Recipe)
     async updateRecipe(@Arg("id") id: string, @Arg("data") data: UpdateRecipeInput) {
       const recipe = await Recipe.findOne({ where: { id }});
@@ -69,20 +61,15 @@ export class updateRecipe {
       await recipe.save();
       return recipe;
     }   
-}
 
-export class deleteRecipeById {
 @Mutation(() => Boolean)
 async deleteRecipeById(@Arg("id") id: string) {
   const recipe = await Recipe.findOne({ where: { id } });
   if (!recipe) throw new Error("Recipe not found!");
   await recipe.remove();
   return true;
-}
+  }
 
-}
-
-export class deleteRecipeByName {
   @Mutation(() => Boolean)
   async deleteRecipeByName(@Arg("name") name: string) {
     const recipe = await Recipe.findOne({ where: { name } });
@@ -90,9 +77,7 @@ export class deleteRecipeByName {
     await recipe.remove();
     return true;
   }
-  
-  }
-
+}
 
 
 

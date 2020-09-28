@@ -4,5 +4,5 @@ import { Category } from '../entity/Category'
 @InputType()
 export class CreateCategoryInput {
   @Field()
-  name: string;
+  name!: string;
 }

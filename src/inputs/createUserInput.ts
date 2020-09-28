@@ -6,14 +6,14 @@ import { Recipe } from '../entity/Recipe'
 @InputType()
 export class CreateUserInput {
   @Field()
-  name: string;
+  name!: string;
 
   @Field()
-  email: string;
+  email!: string;
 
   @Field()
-  password: string;
+  password!: string;
 
   @OneToMany(type => Recipe, recipe => recipe.user) 
-  recipes: [Recipe]; 
+  recipes!: [Recipe]; 
 }

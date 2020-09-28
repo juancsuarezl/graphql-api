@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, JoinTable } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { hash, compare } from "bcryptjs";
 import { Recipe } from './Recipe'
@@ -8,11 +8,11 @@ import { Recipe } from './Recipe'
 export class User extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: string;
+  id!: string;
 
   @Field(() => String)
   @Column()
-  name: string;
+  name!: string;
 
   @Field(() => String)
   @Column()
@@ -20,15 +20,20 @@ export class User extends BaseEntity {
 
   @Field(() => String)
   @Column()
-  password: string;
+  password!: string;
 
-  @OneToMany(type => Recipe, recipe => recipe.user) 
-  recipes: [Recipe]; 
+  @Field(() => String)
+  @CreateDateColumn({type: "timestamp"})
+  createdAt!: string;
+
+  @OneToMany(type => Recipe, recipe => recipe.user)
+  @JoinTable() 
+  recipes!: [Recipe]; 
 
 }
 
 @ObjectType()
 export class LoginResponse {
   @Field()
-  accessToken: string;
+  accessToken!: string;
 }

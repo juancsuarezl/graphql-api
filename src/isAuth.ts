@@ -1,6 +1,7 @@
 import { MiddlewareFn } from "type-graphql";
 import { verify } from "jsonwebtoken";
 import { MyContext } from "./MyContext";
+import { LoginResponse } from "./entity/User";
 
 export const isAuth: MiddlewareFn<MyContext> = ({ context }, next) => {
   const authorization = context.req.headers["authorization"];
@@ -19,4 +20,5 @@ export const isAuth: MiddlewareFn<MyContext> = ({ context }, next) => {
     throw new Error("Not authenticated");
   }
   return next();
+  
 };

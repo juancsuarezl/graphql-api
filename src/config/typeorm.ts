@@ -11,14 +11,11 @@ export const connect = async () => {
             port: 3306,
             username: 'root',
             password: '',
-            database: 'graphql-ts',
+            database: 'testDB',
             synchronize: true,
             entities: [
                 path.join(__dirname, '../entity/**/**.ts')
             ]
-            /*extra: {
-                "charset": "utf8mb4_unicode_ci"
-            }*/
         });
             console.log('Succesfull Connection to DB! ');
     
