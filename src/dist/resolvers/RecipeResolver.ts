@@ -1,7 +1,7 @@
 import {ObjectType, Query, Resolver, Mutation, Arg, MiddlewareFn, UseMiddleware} from 'type-graphql';
-import { verify } from "jsonwebtoken";
-import { MyContext } from "../../MyContext";
-import { isAuth } from "../../isAuth";
+import { verify } from 'jsonwebtoken';
+import { MyContext } from '../../MyContext';
+import { isAuth } from '../../isAuth';
 import { Recipe } from '../../entity/Recipe';
 import { User } from '../../entity/User';
 import { Category } from '../../entity/Category';
@@ -34,7 +34,7 @@ export class RecipeResolver {
     
   @Query(() => [Recipe]!)
   async GetRecipesByCategory(@Arg("category") category: string) {
-     const recipe = await Recipe.find({ where: { category }});
+     const recipe = await Recipe.find({ where: { category }} );
      if(recipe.length == 0){ 
       throw new Error(`Category: ${category} doesn´t exist`);
      }

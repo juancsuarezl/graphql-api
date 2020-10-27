@@ -1,7 +1,7 @@
-import 'reflect-metadata'
-import { Query, Resolver, Mutation, Arg} from 'type-graphql'
-import {connect} from './config/typeorm'
-import {startServer} from './app'
+import 'reflect-metadata';
+import { Query, Resolver, Mutation, Arg} from 'type-graphql';
+import {connect} from './config/typeorm';
+import {startServer} from './app';
 
 async function main () {
     connect();

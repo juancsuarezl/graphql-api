@@ -14,11 +14,29 @@ export const startServer = async () => {
             validate: false
         }),
 
-        context: ({req, res}) => ({req, res})
-    });
+        context: ({req, res}) => {
 
-    server.applyMiddleware({app, path:'/graphql'});
-    return app;
+            // get the user token from the headers
+            const token = req.headers.authorization || ''
+            console.log(token);
+
+        }
+
+        //context: ({ req }) => {
+            // get the user token from the headers
+            //const token = req.headers.authorization || ''
+            
+            // try to retrieve a user with the token
+            //const user = getUser(token);
+            
+            // add the user to the context
+            //return { user };
+
+        
+    })
+
+    server.applyMiddleware({app, path:'/graphql'})
+    return app
 }
     
 

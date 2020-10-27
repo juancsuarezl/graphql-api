@@ -28,7 +28,7 @@ export class User extends BaseEntity {
 
   @OneToMany(type => Recipe, recipe => recipe.user)
   @JoinTable() 
-  recipes!: [Recipe]; 
+  recipes!:Recipe[]; 
 
 }
 

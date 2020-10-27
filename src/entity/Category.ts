@@ -14,5 +14,5 @@ export class Category extends BaseEntity {
   name!:string;
 
   @OneToMany(() => Recipe, (recipe) => recipe.categories)
-  categories!:[Category];
+  categories!:Category[];
 }
